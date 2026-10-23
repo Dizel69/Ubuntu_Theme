@@ -1,0 +1,8 @@
+{
+  "uuid": "nothing-panel@dizel.local",
+  "name": "Nothing panel",
+  "description": "Dot-matrix clock, current weather, media players and system stats in the calendar menu",
+  "shell-version": ["50"],
+  "session-modes": ["ubuntu", "user", "unlock-dialog"],
+  "version": 1
+}

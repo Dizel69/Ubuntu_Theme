@@ -1,0 +1,8 @@
+{
+  "uuid": "mac-scale@dizel.local",
+  "name": "Mac scale",
+  "description": "Smooth minimize and restore into the dock icon",
+  "shell-version": ["48", "49", "50", "51"],
+  "session-modes": ["ubuntu", "user"],
+  "version": 1
+}

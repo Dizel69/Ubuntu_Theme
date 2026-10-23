@@ -1,0 +1,7 @@
+{
+  "uuid": "dock-tone@dizel.local",
+  "name": "Dock Tone",
+  "description": "Tints the wallpaper strip around the dock to match the focused window. The icon pill stays untouched.",
+  "shell-version": ["48", "49", "50", "51"],
+  "version": 1
+}

@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+# Серый вид и возврат к обычному Ubuntu.
+#   look              что включено
+#   look custom       серая тема
+#   look standard     обычный Ubuntu, без расширений этой сборки
+set -euo pipefail
+
+ROOT="${HOME}/.local/share/ubuntu-theme"
+PROFILE="${ROOT}/profile"
+MARKER="${ROOT}/active-look"
+
+STANDARD_EXTENSIONS="['ding@rastersoft.com', 'ubuntu-dock@ubuntu.com', 'tiling-assistant@ubuntu.com']"
+EXTRA_EXTENSIONS=(
+  user-theme@gnome-shell-extensions.gcampax.github.com
+  blur-my-shell@aunetx
+  widgets@distro.com
+  flourish@orsso.github.io
+  dock-tone@dizel.local
+  mac-scale@dizel.local
+  mac-notify@dizel.local
+  nothing-panel@dizel.local
+  nothing-tray@dizel.local
+)
+
+usage() {
+  cat <<'EOF'
+look              показать, какой вид сейчас включён
+look custom       серая тема
+look standard     обычный вид Ubuntu
+EOF
+}
+
+active_look() {
+  if [[ -f "${MARKER}" ]]; then
+    cat "${MARKER}"
+  else
+    echo custom
+  fi
+}
+
+load_dconf() {
+  local path="$1"
+  local file="$2"
+  dconf reset -f "${path}"
+  if [[ -s "${file}" ]]; then
+    dconf load "${path}" < "${file}"
+  fi
+}
+
+enable_user_extensions() {
+  local raw uuid
+  raw="$(cat "${PROFILE}/enabled-extensions.txt")"
+  raw="${raw//[\[\]\' ]/}"
+  IFS=',' read -r -a uuids <<< "${raw}"
+  for uuid in "${uuids[@]}"; do
+    [[ -n "${uuid}" ]] || continue
+    gnome-extensions enable "${uuid}" >/dev/null 2>&1 || true
+  done
+}
+
+disable_extra_extensions() {
+  local uuid
+  for uuid in "${EXTRA_EXTENSIONS[@]}"; do
+    gnome-extensions disable "${uuid}" >/dev/null 2>&1 || true
+  done
+}
+
+apply_standard() {
+  dconf write /org/gnome/shell/enabled-extensions "${STANDARD_EXTENSIONS}"
+  gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-dark'
+  gsettings set org.gnome.desktop.interface icon-theme 'Yaru'
+  gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+  gsettings reset org.gnome.desktop.interface accent-color
+  gsettings reset org.gnome.desktop.wm.preferences button-layout
+  gsettings reset org.gnome.desktop.background picture-uri
+  gsettings reset org.gnome.desktop.background picture-uri-dark
+  gsettings reset org.gnome.desktop.background picture-options
+  dconf reset -f /org/gnome/shell/extensions/dash-to-dock/
+  dconf reset -f /org/gnome/shell/extensions/user-theme/
+  dconf reset -f /org/gnome/shell/extensions/blur-my-shell/
+  dconf reset -f /org/gnome/shell/extensions/flourish/
+  dconf reset -f /org/gnome/shell/extensions/widgets-distro-com/
+  disable_extra_extensions
+  printf 'standard\n' > "${MARKER}"
+}
+
+apply_custom() {
+  if [[ ! -s "${PROFILE}/interface.dconf" ]]; then
+    echo "Профиль темы не найден. Сначала запусти ./install.sh из репозитория." >&2
+    exit 1
+  fi
+
+  load_dconf /org/gnome/desktop/interface/ "${PROFILE}/interface.dconf"
+  load_dconf /org/gnome/desktop/wm/preferences/ "${PROFILE}/wm.dconf"
+  load_dconf /org/gnome/desktop/background/ "${PROFILE}/background.dconf"
+  load_dconf /org/gnome/shell/extensions/dash-to-dock/ "${PROFILE}/dash-to-dock.dconf"
+  load_dconf /org/gnome/shell/extensions/user-theme/ "${PROFILE}/user-theme.dconf"
+  load_dconf /org/gnome/shell/extensions/blur-my-shell/ "${PROFILE}/blur.dconf"
+  load_dconf /org/gnome/shell/extensions/flourish/ "${PROFILE}/flourish.dconf"
+  load_dconf /org/gnome/shell/extensions/widgets-distro-com/ "${PROFILE}/widgets.dconf"
+
+  if [[ -s "${PROFILE}/enabled-extensions.txt" ]]; then
+    dconf write /org/gnome/shell/enabled-extensions "$(cat "${PROFILE}/enabled-extensions.txt")"
+    enable_user_extensions
+  fi
+
+  printf 'custom\n' > "${MARKER}"
+}
+
+cmd="${1:-status}"
+case "${cmd}" in
+  status)
+    case "$(active_look)" in
+      custom) echo "Сейчас включена серая тема." ;;
+      standard) echo "Сейчас включён обычный вид Ubuntu." ;;
+      *) echo "Сейчас включён вид: $(active_look)" ;;
+    esac
+    echo "look custom     — серая тема"
+    echo "look standard   — обычный вид Ubuntu"
+    ;;
+  standard)
+    apply_standard
+    echo "Включён обычный вид Ubuntu."
+    echo "Уже открытые окна подхватят его после повторного открытия."
+    echo "Вернуть серую тему: look custom"
+    ;;
+  custom)
+    apply_custom
+    echo "Включена серая тема."
+    echo "Уже открытые окна подхватят её после повторного открытия."
+    echo "Новые расширения оболочки читаются после выхода из сессии."
+    echo "Вернуть обычный вид: look standard"
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac

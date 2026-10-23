@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+first="${NAUTILUS_SCRIPT_SELECTED_FILE_PATHS%%$'\n'*}"
+dir="$PWD"
+if [[ -d "$first" ]]; then
+  dir="$first"
+elif [[ -e "$first" ]]; then
+  dir="$(dirname "$first")"
+fi
+exec ptyxis --new-window --working-directory="$dir"

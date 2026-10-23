@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+mapfile -t paths <<< "${NAUTILUS_SCRIPT_SELECTED_FILE_PATHS%$'\n'}"
+if [[ -z "${paths[0]:-}" ]]; then
+  paths=("$PWD")
+fi
+exec cursor "${paths[@]}"

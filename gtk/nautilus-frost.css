@@ -1,0 +1,37 @@
+/* Files window: sidebar and folder view share one slightly frosted fill. */
+.nautilus-window.background,
+.nautilus-window.background:backdrop,
+.nautilus-file-chooser.background,
+.nautilus-file-chooser.background:backdrop,
+#NautilusFileChooser.background,
+#NautilusFileChooser.background:backdrop {
+  background-color: alpha(#2c2c2e, 0.91);
+}
+
+.nautilus-window .sidebar-pane,
+.nautilus-window .sidebar-pane:dir(ltr),
+.nautilus-window .sidebar-pane:dir(rtl),
+.nautilus-window .sidebar-pane:backdrop,
+.nautilus-window .sidebar-pane:backdrop:dir(ltr),
+.nautilus-window .sidebar-pane:backdrop:dir(rtl),
+.nautilus-window .sidebar-pane placessidebar,
+.nautilus-window .content-pane,
+.nautilus-window .content-pane:backdrop,
+.nautilus-window headerbar,
+.nautilus-window headerbar:backdrop,
+.nautilus-window .view,
+.nautilus-window .nautilus-grid-view,
+.nautilus-window .nautilus-list-view,
+.nautilus-file-chooser .sidebar-pane,
+.nautilus-file-chooser .sidebar-pane:dir(ltr),
+.nautilus-file-chooser .sidebar-pane:dir(rtl),
+.nautilus-file-chooser .content-pane,
+.nautilus-file-chooser .content-pane:backdrop,
+.nautilus-file-chooser headerbar,
+#NautilusFileChooser .sidebar-pane,
+#NautilusFileChooser .content-pane,
+#NautilusFileChooser headerbar {
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+}

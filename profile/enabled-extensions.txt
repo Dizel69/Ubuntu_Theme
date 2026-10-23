@@ -1,0 +1,1 @@
+['tiling-assistant@ubuntu.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'ubuntu-dock@ubuntu.com', 'mac-scale@dizel.local', 'mac-notify@dizel.local', 'dock-tone@dizel.local', 'widgets@distro.com', 'ding@rastersoft.com', 'flourish@orsso.github.io', 'nothing-panel@dizel.local', 'nothing-tray@dizel.local']

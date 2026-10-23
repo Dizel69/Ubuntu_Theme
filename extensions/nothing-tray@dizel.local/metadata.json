@@ -1,0 +1,8 @@
+{
+  "uuid": "nothing-tray@dizel.local",
+  "name": "Nothing tray",
+  "description": "Hide tray icons behind a dotted chevron; drag icons onto it to hide or show them",
+  "shell-version": ["50"],
+  "session-modes": ["ubuntu", "user"],
+  "version": 1
+}

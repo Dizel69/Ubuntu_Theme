@@ -1,0 +1,8 @@
+{
+  "uuid": "mac-notify@dizel.local",
+  "name": "Mac notifications",
+  "description": "Show notification banners in the top-right corner",
+  "shell-version": ["48", "49", "50", "51"],
+  "session-modes": ["ubuntu", "user"],
+  "version": 1
+}

@@ -1,0 +1,10 @@
+[/]
+accent-color='slate'
+clock-show-seconds=true
+clock-show-weekday=true
+color-scheme='prefer-dark'
+cursor-theme='Yaru'
+gtk-theme='MacTahoe-Dark-grey'
+icon-theme='Yaru-grey-folders'
+show-battery-percentage=true
+toolkit-accessibility=false

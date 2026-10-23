@@ -1,0 +1,2 @@
+[/]
+layout-json='{"widgets":[{"id":"battery-1791355277857","type":"battery","size":"medium","width":454,"height":220,"x":620,"y":60,"data":{}},{"id":"calendar-default","type":"calendar","size":"small","width":560,"height":300,"x":20,"y":60,"data":{}},{"id":"weather-default","type":"weather","size":"small","width":220,"height":220,"x":1120,"y":60,"data":{}},{"id":"photos-default","type":"photos","size":"medium","width":454,"height":220,"x":620,"y":300,"data":{}}]}'
